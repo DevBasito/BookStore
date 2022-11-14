@@ -1,4 +1,7 @@
 const User = require('../models/Enduser');
+const {validationResult} = require('express-validator');
+const jwt = require('jsonwebtoken')
+const bcrypt = require('bcrypt')
 
 
 exports.loginUsers = (req, res) =>{
