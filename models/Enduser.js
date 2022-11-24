@@ -19,23 +19,11 @@ const EnduserSchema = mongoose.Schema(
         password: {
             type: String,
         },
-        userRole: {
+        role: {
             type: String,
-            enum: ['user', 'staff', 'manager', 'admin', 'not assigned'],
-            default: 'not assigned'
+            enum: ['reg_user', 'staff', 'manager', 'admin'],
+            default: 'reg_user'
         },
-        isStaff: {
-            type: Boolean,
-            default: 0
-        },
-        isManager: {
-            type: Boolean,
-            default: 0
-        },
-        isAdmin: {
-            type: Boolean,
-            default: 0
-        }
         
     },
     {
