@@ -1,7 +1,7 @@
 const jwt = require("jsonwebtoken");
 require('dotenv').config();
 const {SECRET} = process.env;
-const cookieParser = require('cookie-parser');
+
 
 exports.authenticateUser = async (req, res, next) => {
     const token = await req.cookies.jwt;
