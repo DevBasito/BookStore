@@ -5,7 +5,10 @@ app.use(express.urlencoded({extended: false}))
 require('dotenv').config()
 
 const EnduserRoute = require("./routes/EnduserRoutes");
+const passwordRecoveryRoute = require("./routes/passwordRecoveryRoutes");
+
 app.use("/", EnduserRoute)
+app.use("/", passwordRecoveryRoute)
 
 const port = process.env.PORT;
 

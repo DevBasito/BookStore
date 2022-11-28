@@ -4,6 +4,7 @@ const jwt = require('jsonwebtoken')
 const bcrypt = require('bcrypt')
 
 const User = require('../models/Enduser');
+const { json } = require('express');
 const { SECRET } = process.env
 
 
@@ -149,7 +150,9 @@ exports.signin = async (req, res) => {
 exports.getLoggedInUser = async (req, res) => {
 
     try {
+
       const user =  await User.findById(req.user.id).select("-password")
+        
         console.log(user)
   
       //return user details without password;
@@ -157,6 +160,8 @@ exports.getLoggedInUser = async (req, res) => {
         message: "User gotten successfully",
         user
       })
+
+      req.user = user
   
   
     } catch (error) {
@@ -164,6 +169,21 @@ exports.getLoggedInUser = async (req, res) => {
     }
   
   
-  }
+}
+
+
+exports.signout = async (req, res) => {
+    const token = await res.headers.authorization;
+    console.log(token);
+    res.cookie (token, ' ', {
+        httponly: true,
+        maxAge:1
+    } );
+    res.status(200).json({
+        success: true,
+        data:{}
+    })
+    res.redirect('/login')
+}
 
 

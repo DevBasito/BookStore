@@ -6,7 +6,7 @@ const controller =  require('../Controllers/EnduserController');
 
 router.post('/register', controller.register);
 router.post('/signin', controller.signin);
-router.get('/signin', authenticateUser, checkIfRegUser, controller.getLoggedInUser)
-
+router.get('/signin', authenticateUser, checkIfRegUser, controller.getLoggedInUser);
+router.get('/signout', authenticateUser, controller.signout);
 
 module.exports = router;
