@@ -1,10 +1,11 @@
 const jwt = require("jsonwebtoken");
 require('dotenv').config();
 const {SECRET} = process.env;
+const cookieParser = require('cookie-parser');
 
-exports.authenticateUser =  (req, res, next) => {
-    const token =   req.headers.authorization;
-
+exports.authenticateUser = async (req, res, next) => {
+    const token = await req.cookies.jwt;
+        console.log('jwt: ' + token);
     if (!token) {
         return res.status(500).json({
             message:"No token, Authorization denied"

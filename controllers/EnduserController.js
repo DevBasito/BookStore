@@ -2,6 +2,7 @@
 const { validationResult } = require('express-validator');
 const jwt = require('jsonwebtoken')
 const bcrypt = require('bcrypt')
+const cookieParser = require('cookie-parser');
 
 const User = require('../models/Enduser');
 const { json } = require('express');
@@ -72,6 +73,8 @@ exports.register = (req, res) => {
                                         throw err
                                     }
 
+                                    
+
                                     res.status(200).json({
                                         message: 'User Created Successfully',
                                         user: newuser.email,
@@ -129,6 +132,9 @@ exports.signin = async (req, res) => {
         }
         else {
 
+            res.cookie('jwt', token, {httponly:true, maxAge: 10800000 });
+            
+
             res.json({
                 statusCode: 200,
                 message: "Logged In Successfully",
@@ -141,6 +147,9 @@ exports.signin = async (req, res) => {
                 },
                 token
             })
+
+            
+            
 
         }
     })
@@ -172,18 +181,11 @@ exports.getLoggedInUser = async (req, res) => {
 }
 
 
-exports.signout = async (req, res) => {
-    const token = await res.headers.authorization;
-    console.log(token);
-    res.cookie (token, ' ', {
-        httponly: true,
-        maxAge:1
-    } );
-    res.status(200).json({
-        success: true,
-        data:{}
+exports.signout =  (req, res) => {
+    res.cookie('jwt','', {maxAge: 1 });
+    res.json({
+        message: "you have been logged out"
     })
-    res.redirect('/login')
 }
 
 

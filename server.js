@@ -3,12 +3,14 @@ const app = express();
 app.use(express.json({extended: false}))
 app.use(express.urlencoded({extended: false}))
 require('dotenv').config()
+const cookieParser = require('cookie-parser');
 
 const EnduserRoute = require("./routes/EnduserRoutes");
 const passwordRecoveryRoute = require("./routes/passwordRecoveryRoutes");
 
 app.use("/", EnduserRoute)
 app.use("/", passwordRecoveryRoute)
+app.use(cookieParser())
 
 const port = process.env.PORT;
 
