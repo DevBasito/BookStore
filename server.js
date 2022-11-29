@@ -7,9 +7,11 @@ require('dotenv').config()
 
 const EnduserRoute = require("./routes/EnduserRoutes");
 const passwordRecoveryRoute = require("./routes/passwordRecoveryRoutes");
+const BookRoute = require("./routes/BookRoutes")
 
 app.use("/", EnduserRoute)
 app.use("/", passwordRecoveryRoute)
+app.use("/", BookRoute)
 
 
 const port = process.env.PORT;
