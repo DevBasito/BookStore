@@ -1,4 +1,4 @@
-# Zuri_Auth_System
+# BOOK sTORE
 
 Create an authentication system, with the following features
 1. Register, Login, Logout (use bcrypt to hash password)
