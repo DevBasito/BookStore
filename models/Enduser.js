@@ -21,8 +21,8 @@ const EnduserSchema = mongoose.Schema(
         },
         role: {
             type: String,
-            enum: ['reg_user', 'staff', 'manager', 'admin'],
-            default: 'reg_user'
+            enum: ['user', 'manager'],
+            default: 'user'
         },
         
     },

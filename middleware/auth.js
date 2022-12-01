@@ -8,7 +8,7 @@ exports.authenticateUser = async (req, res, next) => {
         
     if (!token) {
         return res.status(500).json({
-            message:"No token, Authorization denied"
+            message:"No token, Authorization denied. Sign in to get Access"
         })
         
     }
@@ -29,20 +29,10 @@ exports.authenticateUser = async (req, res, next) => {
     }
 }
 
-exports.checkIfStaff = ( req, res, next) => {
-    if (req.user.role !== 'staff' ){
-        res.status(401).json({
-            message: 'Sorry!, This route can only be accessed by a Staff'
-        })
-    }
-
-    return next();
-}
-
 
 exports.checkIfManager = ( req, res, next) => {
     if (req.user.role !== 'manager' ){
-        res.status(401).json({
+       return  res.status(401).json({
             message: 'Sorry!, This route can only be accessed by a Manager'
         })
     }
@@ -51,7 +41,7 @@ exports.checkIfManager = ( req, res, next) => {
 }
 
 exports.checkIfRegUser = ( req, res, next) => {
-    if (req.user.role !== 'reg_user' ){
+    if (req.user.role !== 'user' ){
         res.status(401).json({
             message: 'Sorry!, This route can only be accessed by a Regular User'
         })
@@ -60,26 +50,3 @@ exports.checkIfRegUser = ( req, res, next) => {
     return next();
 }
 
-
-exports.checkIfAdmin = ( req, res, next) => {
-    if (req.user.role !== 'admin' ){
-        res.status(401).json({
-            message: 'Sorry!, This route can only be accessed by an Admin'
-        })
-    }
-
-    return next();
-}
-
-// exports.checkIfRole = (role) => {
-//     (req, res, next) => {
-//         if (req.user.role !== role ){
-//             res.status(401).json({
-//                 message: 'Sorry!, This route can only be accessed by Admin'
-//             })
-//         }
-    
-//         return next();
-    
-//     }
-// }

@@ -21,7 +21,8 @@ const BookSchema = mongoose.Schema(
         },
         purchaseCount: {
             type: Number,
-            required: true
+            required: true,
+            default: 0
         },
         imageUrl: {
             type: String,

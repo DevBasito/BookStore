@@ -11,7 +11,7 @@ const BookRoute = require("./routes/BookRoutes")
 
 app.use("/", EnduserRoute)
 app.use("/", passwordRecoveryRoute)
-app.use("/", BookRoute)
+app.use("/books", BookRoute)
 
 
 const port = process.env.PORT;
