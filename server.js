@@ -1,8 +1,12 @@
 const express= require('express');
 const app = express();
+const cors = require('cors');
+const cookieParser = require('cookie-parser');
 app.use(express.json({extended: false}))
 app.use(express.urlencoded({extended: false}))
-require('dotenv').config()
+app.use(cors());
+require('dotenv').config();
+app.use(cookieParser())
 
 
 const EnduserRoute = require("./routes/EnduserRoutes");
@@ -17,6 +21,7 @@ app.use("/books", BookRoute)
 const port = process.env.PORT;
 
 const mongoose = require("mongoose");
+
 const connectionString = process.env.MONGO_URI;
 
 mongoose.connect(connectionString, {

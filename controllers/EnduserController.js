@@ -68,7 +68,7 @@ exports.register = (req, res) => {
 
                                 }
                                 console.log(payload)
-                                jwt.sign(payload, SECRET, { expiresIn: 36000 }, (err, token) => {
+                                jwt.sign(payload, SECRET, { expiresIn: 30}, (err, token) => {
                                     if (err) {
                                         throw err
                                     }
@@ -174,7 +174,7 @@ exports.getLoggedInUser = async (req, res) => {
   
   
     } catch (error) {
-      res.status(500).send("Server Error")
+      res.status(500).send("Cant find user")
     }
   
   

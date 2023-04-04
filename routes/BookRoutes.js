@@ -7,7 +7,8 @@ router.use(cookieParser());
 const controller =  require('../Controllers/BookController');
 
 router.post('/create', authenticateUser, checkIfManager, controller.createBook);
-router.get('/all', authenticateUser, controller.getAllBooks );
+// router.get('/all', authenticateUser, controller.getAllBooks );
+router.get('/all', controller.getAllBooks );
 router.get('/category', authenticateUser, controller.getBooksByCategory );
 router.put('/update', authenticateUser, checkIfManager, controller.DoUpdateBook );
 router.delete('/delete', authenticateUser, checkIfManager, controller.DoDeleteBook );

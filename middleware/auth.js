@@ -4,7 +4,8 @@ const {SECRET} = process.env;
 
 
 exports.authenticateUser = async (req, res, next) => {
-    const token = await req.cookies.jwt;
+    const token = await req.headers.authorization;
+    console.log(token)
         
     if (!token) {
         return res.status(500).json({
