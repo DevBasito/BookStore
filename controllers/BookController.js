@@ -11,7 +11,7 @@ const { SECRET } = process.env
 
 exports.createBook = (req, res) => {
     try {
-        const {title, author, category, description, imageUrl, tags } = req.body;
+        const {title, author, category, description, imageUrl, price, tags } = req.body;
 
       let newbook =  Book.create({
                         title: title, 
@@ -19,11 +19,14 @@ exports.createBook = (req, res) => {
                         category: category, 
                         description: description, 
                         imageUrl: imageUrl, 
+                        price: price,
                         tags: tags
                     });
 
         if (newbook) {
-                return res.send("New book created Successfully")
+                return res.json({
+                    message: "New book created Successfully"
+                })
         } else {
             return res.send("Error")
         }
@@ -40,16 +43,33 @@ exports.getAllBooks = (req, res) => {
     Book.find({}, (err, Allbooks) => {
         if (err) {
             return res.status(500).json({
-                message: "No Books Found in this Category"
+                message: "No Books Available in this Category"
             })
         }
 
         res.status(200).json(
             Allbooks
         )
+    }).sort({"title":1})
+
+}
+
+exports.getAvailableBooks = (req, res) => {
+
+    Book.find({available_yn:"Yes"}, (err, Availablebooks) => {
+        if (err) {
+            return res.status(500).json({
+                message: "No Books Available at the Moment"
+            })
+        }
+
+        res.status(200).json(
+            Availablebooks
+        )
     })
 
 }
+
 
 exports.getBooksByCategory = (req, res) => {
 
@@ -71,7 +91,7 @@ exports.getBooksByCategory = (req, res) => {
 
 exports.DoUpdateBook = async (req, res) => {
 
-    const {title, author, category, description, imageUrl, tags } = req.body
+    const {title, author, category, description, imageUrl, price, available_yn, tags } = req.body
 
     let book = await Book.findOne({title:title})
 
@@ -88,7 +108,9 @@ exports.DoUpdateBook = async (req, res) => {
             author: author, 
             category: category, 
             description: description, 
-            imageUrl: imageUrl, 
+            imageUrl: imageUrl,
+            price: price,
+            available_yn: available_yn, 
             tags: tags
         }, 
         (err, bookUpdated) => {

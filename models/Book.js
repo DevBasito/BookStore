@@ -19,6 +19,15 @@ const BookSchema = mongoose.Schema(
             type: String,
             required: true
         },
+        available_yn: {
+            type: String,
+            required: true,
+            default: "Yes"
+        },
+        price: {
+            type: Number,
+            required: true
+        },
         purchaseCount: {
             type: Number,
             required: true,

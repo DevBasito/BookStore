@@ -67,7 +67,7 @@ exports.register = (req, res) => {
                                     role: newuser.role
 
                                 }
-                                console.log(payload)
+                                
                                 jwt.sign(payload, SECRET, { expiresIn: 30}, (err, token) => {
                                     if (err) {
                                         throw err
@@ -162,7 +162,7 @@ exports.getLoggedInUser = async (req, res) => {
 
       const user =  await User.findById(req.user.id).select("-password")
         
-        console.log(user)
+        
   
       //return user details without password;
       res.status(200).json({

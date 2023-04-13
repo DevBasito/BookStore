@@ -4,7 +4,7 @@ const { authenticateUser, checkIfStaff, checkIfAdmin, checkIfManager, checkIfReg
 const cookieParser = require("cookie-parser");
 router.use(cookieParser());
 
-const controller =  require('../Controllers/EnduserController');
+const controller =  require('../controllers/EnduserController');
 
 router.post('/register', controller.register);
 router.post('/signin', controller.signin);
