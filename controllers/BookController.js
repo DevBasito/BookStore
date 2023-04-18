@@ -56,7 +56,7 @@ exports.getAllBooks = (req, res) => {
 
 exports.getAvailableBooks = (req, res) => {
 
-    Book.find({available_yn:"Yes"}, (err, Availablebooks) => {
+    Book.find({available_yn: true}, (err, Availablebooks) => {
         if (err) {
             return res.status(500).json({
                 message: "No Books Available at the Moment"
@@ -82,18 +82,36 @@ exports.getBooksByCategory = (req, res) => {
             })
         }
 
-        res.status(200).json({
+        res.status(200).json(
             Categorybooks
-        })
+        )
+    })
+
+}
+
+exports.getBookById= (req, res) => {
+
+    const {id} = req.params
+   
+    Book.find({_id:id}, (err, BookById) => {
+        if (err) {
+            return res.status(500).json({
+                message: "This Book Doesnt Exist in the System"
+            })
+        }
+
+        res.status(200).json(
+            BookById
+        )
     })
 
 }
 
 exports.DoUpdateBook = async (req, res) => {
 
-    const {title, author, category, description, imageUrl, price, available_yn, tags } = req.body
+    const {id,title, author, category, description, imageUrl, price, available_yn, tags } = req.body
 
-    let book = await Book.findOne({title:title})
+    let book = await Book.findOne({_id:id})
 
 
     if (!book) {
@@ -121,7 +139,8 @@ exports.DoUpdateBook = async (req, res) => {
         }
 
         res.status(200).json({
-            bookUpdated
+            bookUpdated,
+            message: "Book Updated Successfully"
         })
     })
 

@@ -9,8 +9,9 @@ const controller =  require('../controllers/BookController');
 router.post('/create', authenticateUser, checkIfManager, controller.createBook);
 router.get('/allbooks', authenticateUser, checkIfManager, controller.getAllBooks );
 router.get('/all', controller.getAvailableBooks );
+router.get('/:id', controller.getBookById );
 router.get('/category', authenticateUser, controller.getBooksByCategory );
 router.put('/update', authenticateUser, checkIfManager, controller.DoUpdateBook );
 router.delete('/delete', authenticateUser, checkIfManager, controller.DoDeleteBook );
 
-module.exports = router;
+module.exports = router;  

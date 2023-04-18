@@ -20,9 +20,9 @@ const BookSchema = mongoose.Schema(
             required: true
         },
         available_yn: {
-            type: String,
+            type: Boolean,
             required: true,
-            default: "Yes"
+            default: true
         },
         price: {
             type: Number,
