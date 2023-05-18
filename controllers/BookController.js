@@ -111,7 +111,7 @@ exports.DoUpdateBook = async (req, res) => {
 
     const {id,title, author, category, description, imageUrl, price, available_yn, tags } = req.body
 
-    let book = await Book.findOne({_id:id})
+    let book = await Book.findOne({_id: id })
 
 
     if (!book) {
@@ -148,9 +148,9 @@ exports.DoUpdateBook = async (req, res) => {
 
 exports.DoDeleteBook = async (req, res) => {
 
-    const {title, author, category, description, imageUrl, tags } = req.body
+    const {id,title, author, category, description, imageUrl, tags } = req.body
 
-    let book = await Book.findOne({title:title})
+    let book = await Book.findOne({_id: id})
 
 
     if (!book) {

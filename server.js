@@ -16,6 +16,9 @@ const BookRoute = require("./routes/BookRoutes")
 app.use("/", EnduserRoute)
 app.use("/", passwordRecoveryRoute)
 app.use("/books", BookRoute)
+app.all('*', (req, res) => {
+    res.status(401).send('<h1>404! Page not found</h1>');
+  });
 
 
 const port = process.env.PORT;
