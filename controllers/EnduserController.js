@@ -165,8 +165,7 @@ exports.getLoggedInUser = async (req, res) => {
         
   
       //return user details without password;
-      res.status(200).json({
-        message: "User gotten successfully",
+      res.status(200).json({        message: "User gotten successfully",
         user
       })
 
