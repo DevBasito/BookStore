@@ -5,34 +5,37 @@ const bcrypt = require('bcrypt')
 
 
 const Book = require('../models/Book');
+const Order = require('../models/Orders');
 const { json } = require('express');
 const { SECRET } = process.env
 
 
 exports.createBook = (req, res) => {
     try {
-        const {title, author, category, description, imageUrl, price, tags } = req.body;
+        const { title, author, category, description, imageUrl, price, tags } = req.body;
 
-      let newbook =  Book.create({
-                        title: title, 
-                        author: author, 
-                        category: category, 
-                        description: description, 
-                        imageUrl: imageUrl, 
-                        price: price,
-                        tags: tags
-                    });
+        let newbook = Book.create({
+            title: title,
+            author: author,
+            category: category,
+            description: description,
+            imageUrl: imageUrl,
+            price: price,
+            tags: tags
+        });
 
         if (newbook) {
-                return res.json({
-                    message: "New book created Successfully"
-                })
+            return res.json({
+                message: "New book created Successfully"
+            })
         } else {
             return res.send("Error")
         }
-        
+
+
+
     } catch (error) {
-       throw error 
+        throw error
     }
 }
 
@@ -50,13 +53,13 @@ exports.getAllBooks = (req, res) => {
         res.status(200).json(
             Allbooks
         )
-    }).sort({"title":1})
+    }).sort({ "title": 1 })
 
 }
 
 exports.getAvailableBooks = (req, res) => {
 
-    Book.find({available_yn: true}, (err, Availablebooks) => {
+    Book.find({ available_yn: true }, (err, Availablebooks) => {
         if (err) {
             return res.status(500).json({
                 message: "No Books Available at the Moment"
@@ -73,9 +76,9 @@ exports.getAvailableBooks = (req, res) => {
 
 exports.getBooksByCategory = (req, res) => {
 
-    const {category} = req.body
-   
-    Book.find({category:category}, (err, Categorybooks) => {
+    const { category } = req.body
+
+    Book.find({ category: category }, (err, Categorybooks) => {
         if (err) {
             return res.status(500).json({
                 message: "No Books Found in this Category"
@@ -89,11 +92,11 @@ exports.getBooksByCategory = (req, res) => {
 
 }
 
-exports.getBookById= (req, res) => {
+exports.getBookById = (req, res) => {
 
-    const {id} = req.params
-   
-    Book.find({_id:id}, (err, BookById) => {
+    const { id } = req.params
+
+    Book.find({ _id: id }, (err, BookById) => {
         if (err) {
             return res.status(500).json({
                 message: "This Book Doesnt Exist in the System"
@@ -109,9 +112,9 @@ exports.getBookById= (req, res) => {
 
 exports.DoUpdateBook = async (req, res) => {
 
-    const {id,title, author, category, description, imageUrl, price, available_yn, tags } = req.body
+    const { id, title, author, category, description, imageUrl, price, available_yn, tags } = req.body
 
-    let book = await Book.findOne({_id: id })
+    let book = await Book.findOne({ _id: id })
 
 
     if (!book) {
@@ -119,38 +122,38 @@ exports.DoUpdateBook = async (req, res) => {
             message: "Book not found"
         })
     }
-   
-    Book.findByIdAndUpdate(book._id, 
+
+    Book.findByIdAndUpdate(book._id,
         {
-            title: title, 
-            author: author, 
-            category: category, 
-            description: description, 
+            title: title,
+            author: author,
+            category: category,
+            description: description,
             imageUrl: imageUrl,
             price: price,
-            available_yn: available_yn, 
+            available_yn: available_yn,
             tags: tags
-        }, 
+        },
         (err, bookUpdated) => {
-        if (err) {
-            return res.status(500).json({
-                message: "Cannot Update Book"
-            })
-        }
+            if (err) {
+                return res.status(500).json({
+                    message: "Cannot Update Book"
+                })
+            }
 
-        res.status(200).json({
-            bookUpdated,
-            message: "Book Updated Successfully"
+            res.status(200).json({
+                bookUpdated,
+                message: "Book Updated Successfully"
+            })
         })
-    })
 
 }
 
 exports.DoDeleteBook = async (req, res) => {
 
-    const {id,title, author, category, description, imageUrl, tags } = req.body
+    const { id, title, author, category, description, imageUrl, tags } = req.body
 
-    let book = await Book.findOne({_id: id})
+    let book = await Book.findOne({ _id: id })
 
 
     if (!book) {
@@ -158,21 +161,55 @@ exports.DoDeleteBook = async (req, res) => {
             message: "Book not found"
         })
     }
-   
-    Book.findByIdAndDelete(book._id, 
-        (err, bookDeleted) => {
-        if (err) {
-            return res.status(500).json({
-                message: "Cannot Delete Book"
-            })
-        }
 
-        res.status(200).json({
-            bookDeleted
+    Book.findByIdAndDelete(book._id,
+        (err, bookDeleted) => {
+            if (err) {
+                return res.status(500).json({
+                    message: "Cannot Delete Book"
+                })
+            }
+
+            res.status(200).json({
+                bookDeleted
+            })
         })
-    })
 
 }
+
+exports.bookOrder = (req, res) => {
+    try {
+        const { fullname, email, address, phone, amount, order_ref, products, quantity, payment_yn, is_delivered} = req.body;
+
+        let neworder = Order.create({
+            fullname: fullname,
+            email: email,
+            address: address,
+            phone: phone,
+            amount: amount,
+            order_ref: order_ref,
+            products: products,
+            quantity: quantity,
+            payment_yn: payment_yn,
+            is_delivered: is_delivered
+        });
+
+        if (neworder) {
+            return res.json({
+                order: "placed",
+                message: "Your Book Order has been placed successfully, An email will be sent and our customer rep will contact you soon, Thanks for your patronage"
+            })
+        } else {
+            return res.send("Error")
+        }
+
+
+
+    } catch (error) {
+        throw error
+    }
+}
+
 
 
 
