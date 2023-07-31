@@ -210,6 +210,22 @@ exports.bookOrder = (req, res) => {
     }
 }
 
+exports.getOrders = (req, res) => {
+
+    Order.find({}, (err, Orderlist) => {
+        if (err) {
+            return res.status(500).json({
+                message: "Orders not found"
+            })
+        }
+
+        res.status(200).json(
+            Orderlist
+        )
+    }).sort({ "createdAt": -1 })
+
+}
+
 
 
 

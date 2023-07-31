@@ -8,6 +8,7 @@ const controller =  require('../controllers/BookController');
 
 router.post('/create', authenticateUser, checkIfManager, controller.createBook);
 router.get('/allbooks', authenticateUser, checkIfManager, controller.getAllBooks );
+router.get('/orders', authenticateUser, checkIfManager, controller.getOrders);
 router.get('/all', controller.getAvailableBooks );
 router.get('/:id', controller.getBookById );
 router.get('/category', authenticateUser, controller.getBooksByCategory );
