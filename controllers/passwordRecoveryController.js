@@ -23,7 +23,6 @@ exports.passwordRecovery = async (req, res) => {
     } 
 
     const generatedPassword = Math.random().toString(36).substring(2,9);
-    console.log(generatedPassword);
 
     bcrypt.genSalt(10, (err, salt) => {
         if (err) {
@@ -59,7 +58,6 @@ exports.passwordRecovery = async (req, res) => {
 
 exports.changePassword = async (req,res) => {
     const {password} = req.body
-    console.log(password)
 
     bcrypt.genSalt(10, (err, salt) => {
         if (err) {
@@ -70,7 +68,6 @@ exports.changePassword = async (req,res) => {
                 if (err) {
                     throw err
                 }
-                console.log(hashedpassword)
                 User.findByIdAndUpdate(req.user.id, {password: hashedpassword}, (err, PasswordChanged)=>{
                     if (err) {
                         throw err
