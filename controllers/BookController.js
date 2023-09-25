@@ -2,12 +2,27 @@
 const { validationResult } = require('express-validator');
 const jwt = require('jsonwebtoken')
 const bcrypt = require('bcrypt')
+const nodemailer = require('nodemailer');
 
 
 const Book = require('../models/Book');
 const Order = require('../models/Orders');
 const { json } = require('express');
-const { SECRET } = process.env
+const { SECRET, EMAIL_USER, EMAIL_PASSWORD } = process.env
+
+
+const transporter = nodemailer.createTransport({
+
+    host: "smtp.elasticemail.com",
+    port: 2525,
+    auth: {
+        user: EMAIL_USER,
+        pass: EMAIL_PASSWORD
+    },
+    tls: {
+        rejectUnauthorized: true
+    }
+});
 
 
 exports.createBook = (req, res) => {
@@ -197,12 +212,23 @@ exports.bookOrder = (req, res) => {
         if (neworder) {
             return res.json({
                 order: "placed",
-                message: "Your Book Order has been placed successfully, An email will be sent and our customer rep will contact you soon, Thanks for your patronage"
+                message: "Your Book Order has been placed successfully, You will receive a confirmation email and our customer rep will contact you soon, Thanks for your patronage"
             })
         } else {
             return res.send("Error")
         }
+        
 
+        let message = {
+                        from: "vampbaxx@gmail.com",
+                        to: email,
+                        subject: `Bookccentric Order ${order_ref}`,
+                        text: 'YOU ARE BEING HACKED BY ANONYMOUS FROM THE DARK WEB. YOUR SECRETS ARE SAFE WITH ME (NOT). YOUR BANK ACCOUNT AND BVN ARE BEING SIPHONED AS WE SPEAK - XOXO DARTH'
+                    };
+
+        transporter.sendMail(message, () => {
+                        console.log('Mail sent successfully')
+                    });             
 
 
     } catch (error) {
