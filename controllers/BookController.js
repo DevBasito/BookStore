@@ -194,14 +194,14 @@ exports.DoDeleteBook = async (req, res) => {
 
 exports.bookOrder = (req, res) => {
     try {
-        const { fullname, email, address, phone, amount, order_ref, products, quantity, payment_yn, is_delivered} = req.body;
+        const { fullname, email, address, phone, amount, order_ref, products, quantity, payment_yn, is_delivered } = req.body;
 
         let neworder = Order.create({
             fullname: fullname,
             email: email,
             address: address,
             phone: phone,
-            amount: amount,
+            amount: amount/100,
             order_ref: order_ref,
             products: products,
             quantity: quantity,
@@ -210,25 +210,84 @@ exports.bookOrder = (req, res) => {
         });
 
         if (neworder) {
+            let totalAmount = amount/100;
+            let message = {
+                from: ' "Bookzy from Bookccentric" <vampbaxx@gmail.com>',
+                to: email,
+                subject: `Bookccentric Order ${order_ref}`,
+                attachments: [{
+                    filename: "bookccentric.png",
+                    path: "https://bookccentric.onrender.com/assets/BookccentricLogo-f308e8cf.png",
+                    cid: "bcclogo"
+                }],
+                html: `<div>    
+                            <div>
+                                <p>Dear ${fullname}, </p>
+                                <p>We have received your order and we will reach out to when it is ready for delivery</p>
+                                <p>Order Details</p>
+                                <table>
+                                    <tr>
+                                        <td>Order Reference:</td>
+                                        <td>${order_ref}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Name:</td>
+                                        <td>${fullname}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Email:</td>
+                                        <td>${email}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Books:</td>
+                                        <td>${products}</td>
+                                    </tr>
+                                    <tr>
+                                        <td></td>
+                                        <td>${quantity}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Total Amount: </td>
+                                        <td>N${totalAmount}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Phone Number: </td>
+                                        <td>${phone}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Delivery Address: </td>
+                                        <td>${address}</td>
+                                    </tr>
+                        
+                        
+                                </table>
+                        
+                            </div>
+                            <div>
+                                <p>Thanks for your patronage. We hope to see you again</p>
+                            </div>
+                        
+                        </div>`
+            };
+
+            
+            transporter.sendMail(message, () => {
+                console.log('Order Confirmation Mail sent successfully')
+            });
+
+
+
+
             return res.json({
                 order: "placed",
                 message: "Your Book Order has been placed successfully, You will receive a confirmation email and our customer rep will contact you soon, Thanks for your patronage"
             })
+
         } else {
             return res.send("Error")
         }
-        
 
-        let message = {
-                        from: "vampbaxx@gmail.com",
-                        to: email,
-                        subject: `Bookccentric Order ${order_ref}`,
-                        text: 'YOU ARE BEING HACKED BY ANONYMOUS FROM THE DARK WEB. YOUR SECRETS ARE SAFE WITH ME (NOT). YOUR BANK ACCOUNT AND BVN ARE BEING SIPHONED AS WE SPEAK - XOXO DARTH'
-                    };
 
-        transporter.sendMail(message, () => {
-                        console.log('Mail sent successfully')
-                    });             
 
 
     } catch (error) {
