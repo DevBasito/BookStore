@@ -201,7 +201,7 @@ exports.bookOrder = (req, res) => {
             email: email,
             address: address,
             phone: phone,
-            amount: amount/100,
+            amount: amount / 100,
             order_ref: order_ref,
             products: products,
             quantity: quantity,
@@ -210,7 +210,7 @@ exports.bookOrder = (req, res) => {
         });
 
         if (neworder) {
-            let totalAmount = amount/100;
+            let totalAmount = amount / 100;
             let message = {
                 from: ' "Bookzy from Bookccentric" <vampbaxx@gmail.com>',
                 to: email,
@@ -270,7 +270,7 @@ exports.bookOrder = (req, res) => {
                         </div>`
             };
 
-            
+
             transporter.sendMail(message, () => {
                 console.log('Order Confirmation Mail sent successfully')
             });
@@ -310,6 +310,25 @@ exports.getOrders = (req, res) => {
     }).sort({ "createdAt": -1 })
 
 }
+
+exports.getDashboardData = async (req, res) => {
+
+    let TotalOrders = await Order.countDocuments({});
+    let CountAvailableBooks = await  Book.countDocuments({ available_yn: true });
+    let CountBookOffShelf = await Book.countDocuments({ available_yn: false });
+
+
+    if (TotalOrders || CountAvailableBooks || CountBookOffShelf) {
+        res.status(200).json({
+            TotalOrders,
+            CountAvailableBooks,
+             CountBookOffShelf
+    })
+    
+    }
+
+}
+
 
 
 
