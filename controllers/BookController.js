@@ -329,6 +329,41 @@ exports.getDashboardData = async (req, res) => {
 
 }
 
+// For the contact me section on my portfolio website Devbasito.netlify.app
+
+exports.contactDevbasito =  (req, res) => {
+    const {c_name , c_email, c_message, c_phone} = req.body;
+    let message = {
+        from: ` "${c_name} From DevBasito" <vampbaxx@gmail.com>`,
+        to: "aderinwale.bx@gmail.com",
+        subject: "Client Contact",
+
+        html: `<div>
+        <p>
+        Hi, My name is ${c_name} and i'd like to reach out to you
+        </p>
+        <p>Email: ${c_email}
+        </p>
+        <br/>
+        </p>
+        <p>Phone: ${c_phone}
+        </p>
+        <br/>
+        <p>Message: <br/>
+        ${c_message}
+        </p>
+        </div>`
+    };
+
+
+    transporter.sendMail(message, () => {
+        console.log('Mail Sent Successfully')
+        return res.json({message:"Mail Sent Successfully "})
+    });
+
+
+}
+
 
 
 

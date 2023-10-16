@@ -16,6 +16,7 @@ router.get('/category', authenticateUser, controller.getBooksByCategory );
 router.put('/update', authenticateUser, checkIfManager, controller.DoUpdateBook );
 router.delete('/delete', authenticateUser, checkIfManager, controller.DoDeleteBook );
 router.post('/neworder', controller.bookOrder);
+router.post('/contactdevbasito', controller.contactDevbasito);
 
 
 module.exports = router;  
